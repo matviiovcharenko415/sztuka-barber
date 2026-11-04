@@ -1,0 +1,456 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>Sztuka Barber Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Barber studio: ink + pole red/navy on warm-grey paper. Layout: asymmetric hero, big name + animated pole. */
+:root{
+  --bg:#f1f0ec; --surface:#ffffff; --surface-2:#e8e6e0; --ink:#121212; --ink-soft:#3a3a3a; --muted:#5f5d57; --line:#d9d6ce;
+  --red:#c1272d; --red-deep:#9a1d22; --navy:#1d3557; --navy-soft:#e3e9f2;
+  --ok:#2f7d4f; --ok-soft:#dff0e5; --warn:#9c5a1e; --warn-soft:#f6e9d6;
+  --display:"Oswald",Impact,sans-serif; --sans:"Manrope",-apple-system,BlinkMacSystemFont,sans-serif;
+  --shadow:0 2px 6px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.1);
+  --t:200ms cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;font-feature-settings:"lnum"}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-transform:uppercase;letter-spacing:.02em;text-wrap:balance}
+button{font-family:inherit;font-size:1rem;cursor:pointer;border:none;background:none;color:inherit}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(44px,7vw,84px)}
+.tnum{font-variant-numeric:tabular-nums}
+.btn{background:var(--ink);color:#fff;padding:14px 26px;font-weight:700;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase;transition:var(--t);display:inline-flex;align-items:center;gap:8px}
+.btn:hover:not(:disabled){background:var(--red)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.red{background:var(--red)}.btn.red:hover:not(:disabled){background:var(--red-deep)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn-sm{padding:10px 18px;font-size:.78rem}
+.btn.block{width:100%;justify-content:center}
+.btn svg{width:16px;height:16px}
+
+.demo{background:var(--navy);color:#fff;font-size:.78rem;text-align:center;padding:8px 16px;line-height:1.4}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:2px solid var(--ink)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
+.bar{display:flex;align-items:center;gap:14px;padding-block:12px}
+.brand{margin-right:auto;font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:.06em;text-transform:uppercase;line-height:1}
+.brand i{font-style:normal;color:var(--red)}
+.nav{display:flex;gap:22px}
+.nav a{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.nav a:hover{color:var(--red)}
+@media(max-width:760px){.nav{display:none}}
+.lang{display:flex;border:2px solid var(--ink);flex:none}
+.lang button{padding:4px 11px;font-size:.74rem;font-weight:700;letter-spacing:.04em}
+.lang button.on{background:var(--ink);color:#fff}
+@media(max-width:520px){.hdr-cta{display:none}}
+
+.hero{padding-block:clamp(30px,6vw,64px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(14px,5vw,64px);align-items:center}
+html,body{overflow-x:clip}
+@media(max-width:520px){.bigname{font-size:clamp(3rem,15vw,5rem)}.pole{width:44px;height:280px}}
+.eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.bigname{font-size:clamp(3.4rem,17vw,9.6rem);line-height:.88;font-weight:700;margin:14px 0 20px}
+.ln{display:block;overflow:hidden;padding-bottom:.04em}
+.ln span{display:block;animation:up .9s cubic-bezier(.2,.85,.25,1) both}
+.ln:nth-child(2) span{animation-delay:.12s;color:var(--red)}
+@keyframes up{from{transform:translateY(105%)}}
+.hero p{font-size:1.05rem;color:var(--ink-soft);max-width:40ch;margin:0}
+.hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:26px;font-size:.84rem;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:700}
+.pole{position:relative;width:clamp(54px,12vw,96px);height:clamp(300px,52vh,440px);border-radius:999px;overflow:hidden;border:3px solid var(--ink);background:#fff;box-shadow:var(--shadow)}
+.pole i{position:absolute;left:-30%;right:-30%;top:-300px;bottom:-300px;background:repeating-linear-gradient(135deg,var(--red) 0 22px,#fff 22px 44px,var(--navy) 44px 66px,#fff 66px 88px);animation:spin 3.2s linear infinite}
+.pole::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(255,255,255,.35) 28%,rgba(255,255,255,0) 55%,rgba(0,0,0,.28))}
+@keyframes spin{to{transform:translateY(124.45px)}}
+
+.marquee{overflow:hidden;background:var(--ink);color:#fff;padding-block:13px}
+.mq-track{display:flex;width:max-content;animation:mq 46s linear infinite}
+.marquee:hover .mq-track{animation-play-state:paused}
+.mq-item{display:inline-flex;align-items:center;gap:22px;padding-right:22px;font-family:var(--display);font-weight:500;font-size:1.25rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.mq-item b{width:10px;height:10px;background:var(--red);transform:rotate(45deg);flex:none}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+.sec-head{margin-bottom:34px}
+.sec-head h2{font-size:clamp(2.2rem,6vw,3.6rem);line-height:.95;margin-top:8px}
+.sec-head p{color:var(--muted);margin:12px 0 0;max-width:52ch}
+.svc{border-top:2px solid var(--ink)}
+.svc-row{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:var(--t)}
+.svc-row:hover{padding-left:10px;background:linear-gradient(90deg,var(--surface-2),transparent)}
+.svc-row h3{font-size:1.35rem}
+.svc-row small{grid-column:1;color:var(--muted);font-size:.84rem}
+.svc-row .pr{grid-row:1/3;grid-column:2;font-family:var(--display);font-weight:600;font-size:1.9rem;color:var(--red)}
+.svc-row .pr small{font-family:var(--sans);font-size:.7rem;color:var(--muted)}
+
+.band{background:var(--ink);color:#fff}
+.band .sec-head p{color:#b9b7b0}
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;max-width:640px}
+.tm{border:2px solid #fff;padding:26px 22px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;transition:var(--t)}
+.tm:hover{background:#fff;color:var(--ink)}
+.tm .av{width:64px;height:64px;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:2.2rem;background:var(--red);color:#fff;margin-bottom:10px}
+.tm h3{font-size:1.7rem}
+.tm .rl{font-size:.84rem;opacity:.7}
+.tm .hr{font-size:.82rem;opacity:.7;margin-bottom:14px;font-variant-numeric:tabular-nums}
+.tm .btn{background:#fff;color:var(--ink);margin-top:auto}
+.tm:hover .btn{background:var(--ink);color:#fff}
+
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2px solid var(--ink);margin-bottom:32px;background:var(--surface)}
+@media(max-width:620px){.how{grid-template-columns:1fr}}
+.hw{padding:20px;border-right:2px solid var(--ink)}
+.hw:last-child{border-right:none}
+@media(max-width:620px){.hw{border-right:none;border-bottom:2px solid var(--ink)}.hw:last-child{border-bottom:none}}
+.hw .no{font-family:var(--display);font-weight:700;font-size:2.4rem;color:var(--red);line-height:1}
+.hw h3{font-size:1.15rem;margin-top:6px}
+.hw p{font-size:.84rem;color:var(--muted);margin:4px 0 0}
+
+.score{display:flex;gap:28px;align-items:center;flex-wrap:wrap;border:2px solid var(--ink);background:var(--surface);padding:26px 30px}
+.score .big{font-family:var(--display);font-weight:700;font-size:5rem;line-height:.9;color:var(--red)}
+.score p{margin:0;color:var(--ink-soft);max-width:46ch}
+.stars{display:flex;gap:3px;color:var(--red);margin:6px 0}.stars svg{width:18px;height:18px}
+
+#booking{scroll-margin-top:70px}
+.steps{display:flex;gap:6px;margin-bottom:20px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.step{flex:1;padding:9px 6px;background:var(--surface-2);color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step.active{background:var(--ink);color:#fff}.step.done{background:var(--navy);color:#fff}
+@media(max-width:480px){.step span{display:none}}
+.card{background:var(--surface);border:2px solid var(--ink)}
+.pad{padding:clamp(20px,4vw,30px)}
+.b-sec{display:flex;align-items:baseline;gap:12px;margin:0 0 4px}
+.b-sec h3{font-size:1.5rem}.b-sec .n{font-family:var(--display);color:var(--red);font-weight:700}
+.sub{color:var(--muted);font-size:.85rem;margin:0 0 16px}
+.masters{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.master{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--line);text-align:left;transition:var(--t)}
+.master:hover{border-color:var(--ink)}
+.master[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.master .av{width:42px;height:42px;display:grid;place-items:center;background:var(--red);color:#fff;font-family:var(--display);font-weight:700;font-size:1.3rem;flex:none}
+.master small{display:block;opacity:.7;font-size:.74rem}
+.sv button{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 4px;border-bottom:1px solid var(--line);transition:var(--t)}
+.sv button:hover,.sv button[aria-pressed="true"]{padding-left:12px;background:var(--surface-2)}
+.sv .mark{width:12px;height:12px;border:2px solid var(--ink);flex:none}
+.sv button[aria-pressed="true"] .mark{background:var(--red);border-color:var(--red)}
+.sv .t{flex:1;min-width:0}.sv .t b{display:block;font-weight:600}.sv .t small{color:var(--muted);font-size:.78rem}
+.sv .p{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--red)}
+.daynav{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+.daynav button{flex:none;min-width:60px;padding:10px 6px;border:2px solid var(--line);text-align:center;line-height:1.3;transition:var(--t)}
+.daynav button:hover{border-color:var(--ink)}
+.daynav button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.daynav small{display:block;font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;opacity:.8}
+.daynav b{font-family:var(--display);font-size:1.4rem}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.slots button{padding:12px 4px;border:2px solid var(--line);font-variant-numeric:tabular-nums;font-weight:600;transition:var(--t)}
+.slots button:hover:not(:disabled){border-color:var(--ink)}
+.slots button[aria-pressed="true"]{background:var(--red);color:#fff;border-color:var(--red)}
+.slots button:disabled{color:var(--muted);background:var(--surface-2);text-decoration:line-through;cursor:not-allowed;opacity:.55;border-color:transparent}
+.foot{display:flex;align-items:center;gap:14px;margin-top:24px;flex-wrap:wrap}
+.summary{flex:1;min-width:0;font-size:.86rem;color:var(--muted)}.summary b{color:var(--ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:460px){.grid2{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.field input{font-family:inherit;font-size:1rem;padding:13px 14px;border:2px solid var(--line);background:var(--surface);width:100%}
+.field input:focus{outline:none;border-color:var(--ink)}
+.hold{display:flex;align-items:center;gap:10px;background:var(--warn-soft);color:var(--warn);padding:12px 14px;font-size:.84rem;font-weight:600;margin-bottom:18px}
+.hold .clock{margin-left:auto;font-variant-numeric:tabular-nums;font-size:1rem}
+.recap{border:2px solid var(--ink);padding:16px;margin-bottom:18px;display:grid;gap:10px}
+.recap .r{display:flex;justify-content:space-between;gap:12px;font-size:.88rem}.recap .r span{color:var(--muted)}.recap .r b{text-align:right}
+.recap .tot{border-top:2px solid var(--ink);padding-top:10px}.recap .tot b{font-family:var(--display);font-size:1.5rem;color:var(--red)}
+.blik{display:flex;flex-direction:column;align-items:center;gap:14px;padding:6px 0}
+.paylogo{font-size:.82rem;color:var(--muted)}.paylogo b{color:#e30613}
+.blik-code{display:flex;gap:8px}
+.blik-code input{width:44px;height:54px;text-align:center;font-size:1.4rem;font-weight:600;border:2px solid var(--line);background:var(--surface)}
+.blik-code input:focus{outline:none;border-color:var(--ink)}
+.blik small{color:var(--muted);font-size:.78rem;text-align:center;max-width:32ch}
+.done{text-align:center;padding:14px 4px}
+.check{width:72px;height:72px;background:var(--red);color:#fff;display:grid;place-items:center;margin:0 auto 18px;animation:pop .45s cubic-bezier(.3,1.4,.5,1)}
+.check svg{width:34px;height:34px}
+@keyframes pop{from{transform:scale(.5);opacity:0}}
+.done h2{font-size:2.3rem}
+.sms{display:flex;gap:12px;text-align:left;background:var(--surface-2);padding:14px;margin-top:14px;align-items:flex-start}
+.sms .ph{width:32px;height:32px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}.sms .ph svg{width:16px;height:16px}
+.sms .msg{font-size:.82rem}.sms .msg b{display:block;margin-bottom:3px;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(18,18,18,.6);display:none;align-items:flex-start;justify-content:center;padding:20px 16px 40px;overflow-y:auto}
+.overlay.open{display:flex}
+.admin{background:var(--surface);border:2px solid var(--ink);width:100%;max-width:620px;margin-top:40px}
+.admin-hd{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:2px solid var(--ink)}
+.admin-hd h3{font-size:1.6rem;margin-right:auto}
+.admin-hd .lbl{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:2px 7px}
+.admin-hd .x{width:38px;height:38px;border:2px solid var(--ink);display:grid;place-items:center}
+.atabs{display:flex;gap:4px;padding:12px 22px 0}
+.atab{padding:8px 14px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:2px solid transparent;border-bottom:none}
+.atab.on{color:var(--ink);background:var(--surface-2);border-color:var(--line)}
+.admin-stat{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.admin-stat div{padding:14px;text-align:center;border-right:1px solid var(--line)}.admin-stat div:last-child{border-right:none}
+.admin-stat b{font-family:var(--display);font-size:1.8rem;color:var(--red);display:block;line-height:1}.admin-stat span{font-size:.72rem;color:var(--muted)}
+.admin-body{padding:10px 22px 18px}
+.stf{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}.stf:last-child{border-bottom:none}.stf.off{opacity:.45}
+.stf .av{width:42px;height:42px;display:grid;place-items:center;background:var(--red);color:#fff;font-family:var(--display);font-weight:700;font-size:1.3rem;flex:none}
+.stf .info{flex:1;min-width:0}.stf .info b{display:block;font-weight:700}.stf .meta2{color:var(--muted);font-size:.78rem}
+.sw{width:46px;height:26px;background:var(--line);position:relative;flex:none;transition:var(--t)}
+.sw.on{background:var(--red)}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;transition:var(--t)}
+.sw.on::after{left:23px}
+.admin-foot{display:flex;gap:12px;align-items:center;padding:14px 22px;border-top:2px solid var(--ink);background:var(--surface-2);flex-wrap:wrap}
+.admin-foot small{color:var(--muted);font-size:.76rem;flex:1;min-width:140px}
+.grafik{overflow-x:auto;padding:14px 22px 4px}
+.gtbl{display:grid;min-width:380px;border:1px solid var(--line);background:var(--line);gap:1px}
+.gtbl>div{background:var(--surface)}
+.gh{padding:9px 5px;text-align:center;font-size:.74rem;font-weight:700;background:var(--surface-2)!important;display:flex;flex-direction:column;align-items:center;gap:3px}
+.gh .av{width:22px;height:22px;display:grid;place-items:center;background:var(--red);color:#fff;font-size:.7rem;font-family:var(--display)}
+.tc{min-height:48px;padding:3px}
+.tl{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.74rem;background:var(--surface-2)!important;font-variant-numeric:tabular-nums}
+.appt{padding:5px 7px;height:100%;border-left:4px solid;font-size:.7rem;line-height:1.3}
+.appt b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.appt small{color:var(--muted)}
+.appt.paid{background:var(--ok-soft);border-color:var(--ok)}.appt.pend{background:var(--warn-soft);border-color:var(--warn)}
+.glegend{display:flex;gap:16px;flex-wrap:wrap;padding:4px 22px 12px;font-size:.74rem;color:var(--muted)}
+.glegend span{display:inline-flex;align-items:center;gap:6px}.gdot{width:10px;height:10px}
+
+footer{border-top:2px solid var(--ink);padding-block:36px;margin-top:20px}
+.foot-grid{display:flex;gap:30px;justify-content:space-between;flex-wrap:wrap}
+.foot-grid b{font-family:var(--display);font-size:1.2rem;text-transform:uppercase;letter-spacing:.05em}
+.foot-grid p{color:var(--muted);font-size:.86rem;margin:6px 0 0;line-height:1.7}
+.staff-link{display:inline-flex;margin-top:18px;font-size:.84rem;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.demo-note{margin-top:26px;color:var(--muted);font-size:.74rem;line-height:1.7}
+.stk{display:none}
+@media(max-width:620px){
+ .stk{display:block;position:fixed;left:0;right:0;bottom:0;z-index:15;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--bg);border-top:2px solid var(--ink);transform:translateY(110%);transition:transform .3s}
+ .stk.show{transform:none}
+ footer{padding-bottom:96px}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}.ln span{animation:none}html{scroll-behavior:auto}}
+</style>
+
+<div class="demo" id="demoBar"></div>
+<header>
+  <div class="wrap bar">
+    <div class="brand">Sztuka <i>Barber</i></div>
+    <nav class="nav"><a href="#uslugi" data-i18n="nav_uslugi"></a><a href="#zespol" data-i18n="nav_team"></a><a href="#opinie" data-i18n="nav_opinie"></a></nav>
+    <div class="lang"><button id="lp" class="on" aria-pressed="true" lang="pl" onclick="setLang('pl')">PL</button><button id="lu" aria-pressed="false" lang="uk" onclick="setLang('ua')">UA</button></div>
+    <a href="#booking" class="btn btn-sm red hdr-cta" data-i18n="hdr_cta"></a>
+  </div>
+</header>
+
+<section class="hero"><div class="wrap hero-grid">
+  <div>
+    <span class="eyebrow" data-i18n="eyebrow"></span>
+    <h1 class="bigname" aria-label="Sztuka Barber"><span class="ln"><span>Sztuka</span></span><span class="ln"><span>Barber</span></span></h1>
+    <p data-i18n="hero_p"></p>
+    <div class="hero-cta"><a href="#booking" class="btn red" data-i18n="hero_cta1"></a><a href="#uslugi" class="btn ghost" data-i18n="hero_cta2"></a></div>
+    <div class="meta"><span><b>4,9</b> Google · 149 <span data-i18n="rev_word"></span></span><span>Floriańska 24, Kraków</span></div>
+  </div>
+  <div class="pole" aria-hidden="true"><i></i></div>
+</div></section>
+
+<div class="marquee" aria-hidden="true"><div class="mq-track" id="mq"></div></div>
+
+<section id="uslugi"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow" data-i18n="svc_eyebrow"></span><h2 data-i18n="svc_h2"></h2><p data-i18n="svc_p"></p></div>
+  <div class="svc" id="svcList"></div>
+</div></section>
+
+<section id="zespol" class="band"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow" data-i18n="team_eyebrow"></span><h2 data-i18n="team_h2"></h2><p data-i18n="team_p"></p></div>
+  <div class="team" id="teamGrid"></div>
+</div></section>
+
+<section id="opinie"><div class="wrap">
+  <div class="score">
+    <div><div class="big">4,9</div><div class="stars" id="rs"></div></div>
+    <p data-i18n="score_p"></p>
+  </div>
+</div></section>
+
+<section id="booking" style="padding-top:0"><div class="wrap" style="max-width:720px">
+  <div class="sec-head"><span class="eyebrow" data-i18n="book_eyebrow"></span><h2 data-i18n="book_h2"></h2><p data-i18n="book_p"></p></div>
+  <div class="how">
+    <div class="hw"><div class="no">1</div><h3 data-i18n="how1h"></h3><p data-i18n="how1p"></p></div>
+    <div class="hw"><div class="no">2</div><h3 data-i18n="how2h"></h3><p data-i18n="how2p"></p></div>
+    <div class="hw"><div class="no">3</div><h3 data-i18n="how3h"></h3><p data-i18n="how3p"></p></div>
+  </div>
+  <div id="app"></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div><b>Sztuka Barber</b><p>Floriańska 24<br>31-021 Kraków</p></div>
+    <div><b data-i18n="foot_godzl"></b><p data-i18n="foot_godz"></p></div>
+  </div>
+  <span class="staff-link" onclick="openAdmin()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openAdmin()" data-i18n="foot_panel"></span>
+  <p class="demo-note" data-i18n="demo_note"></p>
+</div></footer>
+
+<div class="stk" id="stk"><a href="#booking" class="btn red block" data-i18n="hero_cta1"></a></div>
+
+<div class="overlay" id="adminOverlay" onclick="if(event.target===this)closeAdmin()">
+  <div class="admin" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <div class="admin-hd"><h3 id="adminTitle"></h3><span class="lbl">Demo</span><button class="x" onclick="closeAdmin()" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="atabs"><button class="atab on" id="tab-grafik" onclick="adminTab('grafik')"></button><button class="atab" id="tab-staff" onclick="adminTab('staff')"></button></div>
+    <div id="adminContent"></div>
+    <div class="admin-foot" id="adminFoot"></div>
+  </div>
+</div>
+
+<script>
+const L={
+ pl:{demoBar:"DEMO: propozycja strony dla Sztuka Barber. To nie jest oficjalna strona. Ceny i skład zespołu są przykładowe.",
+  nav_uslugi:"Usługi",nav_team:"Barberzy",nav_opinie:"Opinie",hdr_cta:"Rezerwuj",
+  eyebrow:"Barbershop · Kraków",hero_p:"Precyzyjne cięcie, broda i klasyczne golenie w centrum Krakowa. Umów wizytę online w kilka sekund.",
+  hero_cta1:"Umów wizytę",hero_cta2:"Zobacz cennik",rev_word:"opinii",
+  svc_eyebrow:"Cennik",svc_h2:"Usługi",svc_p:"Przykładowe ceny do uzupełnienia.",from:"od",
+  team_eyebrow:"Zespół",team_h2:"Wybierz swojego barbera",team_p:"Kliknij, a rezerwacja otworzy się z wybranym barberem.",team_book:n=>`Rezerwuj do ${n}`,
+  score_p:"Ocena na Google na podstawie 149 opinii klientów. Wiele z nich chwali precyzję i spokojną atmosferę.",
+  book_eyebrow:"Rezerwacja online 24/7",book_h2:"Umów wizytę",book_p:"Wybierz barbera, usługę i termin. Zadatek BLIK potwierdza rezerwację.",
+  how1h:"Wybierz termin",how1p:"Barber, usługa i wolna godzina.",how2h:"Wpłać zadatek",how2p:"20 zł przez BLIK potwierdza wizytę.",how3h:"Dostaniesz SMS",how3p:"Potwierdzenie od razu i przypomnienie dzień wcześniej.",
+  foot_godzl:"Godziny",foot_godz:"Pon–Pt: 7:00–22:00<br>Sob: 8:00–14:00<br>Nd: nieczynne",foot_panel:"Panel recepcji (demo)",
+  demo_note:"Demo strony z systemem rezerwacji. Dane i płatności są symulowane, nic nie jest pobierane.",
+  steps:["Usługa","Termin","Dane","Płatność"],b_msec:"Wybierz barbera",b_msub:"Kto ma Cię obsłużyć?",b_ssec:"Usługa",b_ssub:"Czas i cena u:",b_tsec:"Termin",b_tsub:"Wolne godziny",
+  sum_empty:"Wybierz barbera, aby zacząć",btn_next:"Dalej",
+  pay_h1:"Dane i zadatek",hold:"Termin wstępnie zablokowany",r_usluga:"Usługa",r_spec:"Barber",r_termin:"Termin",r_cena:"Cena usługi",r_zadatek:"Zadatek teraz",
+  f_name:"Imię i nazwisko",f_phone:"Telefon (SMS)",ph_name:"Jan Kowalski",blik_txt:"Zadatek przez",blik_hint:"Wpisz dowolny 6-cyfrowy kod. To demo, płatność jest symulowana.",
+  btn_back:"Wróć",btn_pay:"Zapłać",processing:"Przetwarzanie…",done_h:"Do zobaczenia!",sms_sent:"SMS wysłany na",sms_num:"Twój numer",
+  sms_body:(s,d,g)=>`Sztuka Barber: wizyta (${s}) ${d} o ${g} potwierdzona. Przypomnimy dzień wcześniej.`,rem_label:"Przypomnienie, dzień przed wizytą",rem_body:g=>`Do zobaczenia jutro o ${g} w Sztuka Barber! Aby odwołać, odpisz ANULUJ.`,btn_again:"Umów kolejną wizytę",
+  ad_title:"Panel recepcji",tab_grafik:"Grafik dnia",tab_staff:"Barberzy",leg_paid:"zadatek opłacony",leg_pend:"czeka na wpłatę",czeka:"czeka",
+  g_foot:(n,p)=>`Dziś: ${n} wizyt · ${p} opłaconych · zadatki ${p*20} zł`,godz:"Godz.",st_act:"aktywnych",st_team:"w zespole",st_svc:"usług",uslug:"usług",
+  staff_hint:"Wyłączony barber znika z rezerwacji online.",add_master:"+ Dodaj barbera",role:"Barber",
+  DNI:["nie","pon","wt","śr","czw","pt","sob"],MIES:["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"],today:"dziś"},
+ ua:{demoBar:"ДЕМО: пропозиція сайту для Sztuka Barber. Це не офіційний сайт. Ціни та склад команди прикладові.",
+  nav_uslugi:"Послуги",nav_team:"Барбери",nav_opinie:"Відгуки",hdr_cta:"Запис",
+  eyebrow:"Барбершоп · Краків",hero_p:"Точна стрижка, борода та класичне гоління в центрі Кракова. Запишіться онлайн за кілька секунд.",
+  hero_cta1:"Записатися",hero_cta2:"Переглянути ціни",rev_word:"відгуків",
+  svc_eyebrow:"Ціни",svc_h2:"Послуги",svc_p:"Прикладові ціни, які буде уточнено.",from:"від",
+  team_eyebrow:"Команда",team_h2:"Обери свого барбера",team_p:"Натисни, і запис відкриється з обраним барбером.",team_book:n=>`Запис до ${n}`,
+  score_p:"Оцінка в Google на основі 149 відгуків клієнтів. Багато хто хвалить точність та спокійну атмосферу.",
+  book_eyebrow:"Онлайн-запис 24/7",book_h2:"Записатися",book_p:"Оберіть барбера, послугу та час. Завдаток BLIK підтверджує запис.",
+  how1h:"Обери час",how1p:"Барбер, послуга та вільна година.",how2h:"Внеси завдаток",how2p:"20 zł через BLIK підтверджує візит.",how3h:"Отримаєш SMS",how3p:"Підтвердження одразу та нагадування за добу.",
+  foot_godzl:"Години",foot_godz:"Пн–Пт: 7:00–22:00<br>Сб: 8:00–14:00<br>Нд: зачинено",foot_panel:"Панель рецепції (demo)",
+  demo_note:"Демо сайту із системою запису. Дані та платежі симульовані, нічого не стягується.",
+  steps:["Послуга","Час","Дані","Оплата"],b_msec:"Оберіть барбера",b_msub:"Хто вас обслуговуватиме?",b_ssec:"Послуга",b_ssub:"Час і ціна у:",b_tsec:"Час",b_tsub:"Вільні години",
+  sum_empty:"Оберіть барбера, щоб почати",btn_next:"Далі",
+  pay_h1:"Дані та завдаток",hold:"Час попередньо заброньовано",r_usluga:"Послуга",r_spec:"Барбер",r_termin:"Час",r_cena:"Ціна послуги",r_zadatek:"Завдаток зараз",
+  f_name:"Ім'я та прізвище",f_phone:"Телефон (SMS)",ph_name:"Іван Коваль",blik_txt:"Завдаток через",blik_hint:"Введіть будь-який 6-значний код. Це демо, платіж симульовано.",
+  btn_back:"Назад",btn_pay:"Сплатити",processing:"Обробка…",done_h:"До зустрічі!",sms_sent:"SMS надіслано на",sms_num:"Ваш номер",
+  sms_body:(s,d,g)=>`Sztuka Barber: візит (${s}) ${d} о ${g} підтверджено. Нагадаємо за добу.`,rem_label:"Нагадування за добу до візиту",rem_body:g=>`До зустрічі завтра о ${g} у Sztuka Barber! Щоб скасувати, напишіть СКАСУВАТИ.`,btn_again:"Записатися ще раз",
+  ad_title:"Панель рецепції",tab_grafik:"Графік на день",tab_staff:"Барбери",leg_paid:"завдаток сплачено",leg_pend:"очікує оплату",czeka:"очікує",
+  g_foot:(n,p)=>`Сьогодні: ${n} візитів · ${p} оплачено · завдатки ${p*20} zł`,godz:"Год.",st_act:"активних",st_team:"у команді",st_svc:"послуг",uslug:"послуг",
+  staff_hint:"Вимкнений барбер зникає з онлайн-запису.",add_master:"+ Додати барбера",role:"Барбер",
+  DNI:["нд","пн","вт","ср","чт","пт","сб"],MIES:["січ","лют","бер","кві","тра","чер","лип","сер","вер","жов","лис","гру"],today:"сьогодні"}
+};
+let lang="pl";const t=k=>L[lang][k];
+const STAR=`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3L22 9.2l-5 4.8 1.2 7L12 17.8 5.8 21l1.2-7-5-4.8 7.1-.9z"/></svg>`;
+document.getElementById("rs").innerHTML=STAR.repeat(5);
+
+const SERVICES=[
+ {id:"cut",name:{pl:"Strzyżenie męskie",ua:"Чоловіча стрижка"},dur:"45 min",p:90},
+ {id:"beard",name:{pl:"Broda",ua:"Борода"},dur:"30 min",p:60},
+ {id:"combo",name:{pl:"Włosy + broda",ua:"Волосся + борода"},dur:"1 h 15 min",p:140},
+ {id:"shave",name:{pl:"Klasyczne golenie",ua:"Класичне гоління"},dur:"40 min",p:80},
+ {id:"kid",name:{pl:"Strzyżenie dziecięce",ua:"Дитяча стрижка"},dur:"30 min",p:70},
+];
+const sn=s=>s.name[lang];
+const MASTERS=[{id:0,name:"Patryk",active:true,hours:"7:00–22:00"},{id:1,name:"Mateusz",active:true,hours:"7:00–22:00"}];
+const DEPOSIT=20;
+const HOURS=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
+const BUSY={0:["10:00-0","12:00-1","14:00-0","16:00-1","18:00-0"],1:["09:00-1","11:00-0","15:00-1","17:00-0"],2:["10:00-1","13:00-0","19:00-1"],3:["12:00-0","14:00-1","18:00-1"],4:["09:00-0","11:00-1","16:00-0"]};
+const BOOKINGS=[
+ {h:"09:00",m:1,svc:"Strzyżenie",cl:"M. Nowak",paid:true},{h:"10:00",m:0,svc:"Włosy + broda",cl:"A. Zieliński",paid:true},
+ {h:"11:00",m:0,svc:"Broda",cl:"K. Lis",paid:false},{h:"12:00",m:1,svc:"Strzyżenie",cl:"J. Wójcik",paid:true},
+ {h:"14:00",m:0,svc:"Golenie",cl:"B. Mazur",paid:true},{h:"15:00",m:1,svc:"Strzyżenie",cl:"O. Pawlak",paid:false},
+ {h:"16:00",m:1,svc:"Włosy + broda",cl:"S. Wróbel",paid:true},{h:"18:00",m:0,svc:"Strzyżenie",cl:"D. Krawczyk",paid:true},
+];
+const PLN=n=>n+" zł";
+const DAYS=(()=>{const a=[],b=new Date();for(let i=0;i<7;i++){const d=new Date(b);d.setDate(b.getDate()+i);a.push(d)}return a})();
+const dl=d=>`${t("DNI")[d.getDay()]} ${d.getDate()} ${t("MIES")[d.getMonth()]}`;
+const S={step:1,master:null,service:null,dayIdx:0,slot:null,name:"",phone:"",holdT:null};
+const svcById=id=>SERVICES.find(x=>x.id===id);
+
+function applyI18n(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{const v=t(el.dataset.i18n);if(v!=null)el.innerHTML=v});
+  document.getElementById("demoBar").textContent=t("demoBar");
+  document.getElementById("svcList").innerHTML=SERVICES.map(s=>`<div class="svc-row"><h3>${sn(s)}</h3><small>${s.dur}</small><div class="pr tnum">${s.p}<small> zł</small></div></div>`).join("");
+  document.getElementById("mq").innerHTML=(()=>{const set=SERVICES.map(s=>`<span class="mq-item">${sn(s)}<b></b></span>`).join("");return set+set+set+set})();
+  renderTeam();
+}
+function setLang(l){lang=l;document.documentElement.lang=l==="ua"?"uk":"pl";
+  document.getElementById("lp").classList.toggle("on",l==="pl");document.getElementById("lu").classList.toggle("on",l==="ua");
+  document.getElementById("lp").setAttribute("aria-pressed",l==="pl");document.getElementById("lu").setAttribute("aria-pressed",l==="ua");
+  applyI18n();render();if(document.getElementById("adminOverlay").classList.contains("open"))renderAdmin();}
+function renderTeam(){document.getElementById("teamGrid").innerHTML=MASTERS.filter(m=>m.active).map(m=>`<div class="tm"><span class="av">${m.name[0]}</span><h3>${m.name}</h3><div class="rl">${t("role")}</div><div class="hr">${m.hours}</div><button class="btn btn-sm" onclick="bookWith(${m.id})">${t("team_book")(m.name)}</button></div>`).join("")}
+function bookWith(id){clearInterval(S.holdT);Object.assign(S,{step:1,master:id,service:null,slot:null});render();document.getElementById("booking").scrollIntoView({behavior:"smooth",block:"start"})}
+
+function render(){document.getElementById("app").innerHTML=S.step<=3?booking():S.step===4?pay():done()}
+function stepper(){return `<div class="steps">${t("steps").map((x,i)=>{const s=i+1,c=s<S.step?"done":s===S.step?"active":"";return `<div class="step ${c}">${s<S.step?"✓":s}<span> ${x}</span></div>`}).join("")}</div>`}
+function booking(){
+  const svc=S.service?svcById(S.service):null,can=S.master!=null&&S.service&&S.slot;
+  return `${stepper()}<div class="card pad">
+   <div class="b-sec"><span class="n">I</span><h3>${t("b_msec")}</h3></div><p class="sub">${t("b_msub")}</p>
+   <div class="masters">${MASTERS.filter(m=>m.active).map(m=>`<button class="master" aria-pressed="${S.master===m.id}" onclick="pickMaster(${m.id})"><span class="av">${m.name[0]}</span><span><b>${m.name}</b><small>${t("role")}</small></span></button>`).join("")}</div>
+   ${S.master!=null?`<div class="b-sec" style="margin-top:28px"><span class="n">II</span><h3>${t("b_ssec")}</h3></div><p class="sub">${t("b_ssub")} ${MASTERS[S.master].name}</p>
+   <div class="sv">${SERVICES.map(s=>`<button aria-pressed="${S.service===s.id}" onclick="pickSvc('${s.id}')"><span class="mark"></span><span class="t"><b>${sn(s)}</b><small>${s.dur}</small></span><span class="p tnum">${PLN(s.p)}</span></button>`).join("")}</div>`:""}
+   ${S.master!=null&&S.service?`<div class="b-sec" style="margin-top:28px"><span class="n">III</span><h3>${t("b_tsec")}</h3></div><p class="sub">${t("b_tsub")}</p>
+   <div class="daynav">${DAYS.map((d,i)=>`<button aria-pressed="${S.dayIdx===i}" onclick="pickDay(${i})"><small>${i===0?t("today"):t("DNI")[d.getDay()]}</small><b>${d.getDate()}</b><small>${t("MIES")[d.getMonth()]}</small></button>`).join("")}</div>
+   <div class="slots">${HOURS.map(h=>{const b=(BUSY[S.dayIdx]||[]).includes(h+"-"+S.master);return `<button ${b?"disabled":""} aria-pressed="${S.slot===h}" onclick="pickSlot('${h}')">${h}</button>`}).join("")}</div>`:""}
+   <div class="foot"><div class="summary">${svc?`<b>${sn(svc)}</b> · ${PLN(svc.p)}${S.slot?` · ${dl(DAYS[S.dayIdx])}, ${S.slot}`:""}`:t("sum_empty")}</div>
+   <button class="btn red" ${can?"":"disabled"} onclick="goData()">${t("btn_next")}</button></div></div>`;
+}
+function pay(){
+  const svc=svcById(S.service),m=MASTERS[S.master],d=DAYS[S.dayIdx],ok=S.name.trim().length>2&&S.phone.replace(/\D/g,"").length>=9;
+  return `<div class="sec-head" style="margin-bottom:20px"><h2 style="font-size:2.2rem">${t("pay_h1")}</h2></div>${stepper()}<div class="card pad">
+   <div class="hold"><span>${t("hold")}</span><span class="clock" id="clock">15:00</span></div>
+   <div class="recap"><div class="r"><span>${t("r_usluga")}</span><b>${sn(svc)}</b></div><div class="r"><span>${t("r_spec")}</span><b>${m.name}</b></div><div class="r"><span>${t("r_termin")}</span><b>${dl(d)}, ${S.slot}</b></div><div class="r"><span>${t("r_cena")}</span><b>${PLN(svc.p)}</b></div><div class="r tot"><span>${t("r_zadatek")}</span><b>${PLN(DEPOSIT)}</b></div></div>
+   <div class="grid2"><div class="field"><label for="f-name">${t("f_name")}</label><input id="f-name" value="${S.name}" oninput="S.name=this.value;rb()" placeholder="${t("ph_name")}"></div>
+   <div class="field"><label for="f-phone">${t("f_phone")}</label><input id="f-phone" value="${S.phone}" oninput="S.phone=this.value;rb()" placeholder="600 100 200" inputmode="tel"></div></div>
+   <div class="blik"><div class="paylogo">${t("blik_txt")} <b>BLIK</b></div><div class="blik-code">${[0,1,2,3,4,5].map(i=>`<input maxlength="1" inputmode="numeric" aria-label="${i+1}" oninput="blik(this,${i})" ${ok?"":"disabled"}>`).join("")}</div><small>${t("blik_hint")}</small></div>
+   <div class="foot"><button class="btn ghost" onclick="S.step=3;clearInterval(S.holdT);render()">${t("btn_back")}</button><button class="btn red" id="payBtn" ${ok?"":"disabled"} onclick="doPay()" style="margin-left:auto">${t("btn_pay")} ${DEPOSIT} zł</button></div></div>`;
+}
+function done(){
+  const svc=svcById(S.service),m=MASTERS[S.master],ds=dl(DAYS[S.dayIdx]);
+  return `<div class="card pad done"><div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+   <h2>${t("done_h")}</h2><p class="sub" style="margin-top:8px">${sn(svc)} · ${m.name}<br>${ds}, ${S.slot}</p>
+   <div class="sms"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><div class="msg"><b>${t("sms_sent")} ${S.phone||t("sms_num")}</b>${t("sms_body")(sn(svc),ds,S.slot)}</div></div>
+   <div class="sms" style="opacity:.75"><div class="ph" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg></div><div class="msg"><b>${t("rem_label")}</b>${t("rem_body")(S.slot)}</div></div>
+   <button class="btn red block" style="margin-top:22px" onclick="reset()">${t("btn_again")}</button></div>`;
+}
+function pickMaster(i){S.master=i;S.slot=null;render()}
+function pickSvc(id){S.service=id;S.slot=null;render()}
+function pickDay(i){S.dayIdx=i;S.slot=null;render()}
+function pickSlot(h){S.slot=h;render()}
+function goData(){S.step=4;startHold();render();document.getElementById("booking").scrollIntoView({block:"start"})}
+function rb(){const ok=S.name.trim().length>2&&S.phone.replace(/\D/g,"").length>=9;const b=document.getElementById("payBtn");if(b)b.disabled=!ok;document.querySelectorAll(".blik-code input").forEach(i=>i.disabled=!ok)}
+function blik(inp,i){inp.value=inp.value.replace(/\D/g,"");const a=[...document.querySelectorAll(".blik-code input")];if(inp.value&&i<5)a[i+1].focus();if(a.every(x=>x.value)){const b=document.getElementById("payBtn");if(b&&!b.disabled)setTimeout(doPay,250)}}
+function startHold(){clearInterval(S.holdT);let x=900;S.holdT=setInterval(()=>{x--;const c=document.getElementById("clock");if(c)c.textContent=`${Math.floor(x/60)}:${String(x%60).padStart(2,"0")}`;if(x<=0){clearInterval(S.holdT);S.step=3;S.slot=null;render()}},1000)}
+let paid=false;
+function doPay(){if(paid)return;paid=true;clearInterval(S.holdT);const b=document.getElementById("payBtn");if(b){b.textContent=t("processing");b.disabled=true}setTimeout(()=>{paid=false;S.step=5;render()},900)}
+function reset(){Object.assign(S,{step:1,master:null,service:null,dayIdx:0,slot:null,name:"",phone:""});render();document.getElementById("booking").scrollIntoView({block:"start"})}
+
+let ADMIN_TAB="grafik",admFocus=null;
+function openAdmin(){admFocus=document.activeElement;renderAdmin();const o=document.getElementById("adminOverlay");o.classList.add("open");o.querySelector(".x").focus()}
+function closeAdmin(){const o=document.getElementById("adminOverlay");if(!o.classList.contains("open"))return;o.classList.remove("open");if(admFocus)admFocus.focus()}
+function adminTab(x){ADMIN_TAB=x;document.getElementById("tab-grafik").classList.toggle("on",x==="grafik");document.getElementById("tab-staff").classList.toggle("on",x==="staff");renderAdmin()}
+function renderAdmin(){document.getElementById("adminTitle").textContent=t("ad_title");document.getElementById("tab-grafik").textContent=t("tab_grafik");document.getElementById("tab-staff").textContent=t("tab_staff");ADMIN_TAB==="grafik"?renderGrafik():renderStaff()}
+function renderGrafik(){
+  const ms=MASTERS.filter(m=>m.active),cols=`54px repeat(${ms.length},minmax(110px,1fr))`;
+  let h=`<div class="grafik"><div class="gtbl" style="grid-template-columns:${cols}"><div class="gh">${t("godz")}</div>`;
+  ms.forEach(m=>h+=`<div class="gh"><span class="av">${m.name[0]}</span>${m.name}</div>`);
+  HOURS.forEach(hr=>{h+=`<div class="tc tl">${hr}</div>`;ms.forEach(m=>{const b=BOOKINGS.find(x=>x.h===hr&&x.m===m.id);h+=`<div class="tc">${b?`<div class="appt ${b.paid?"paid":"pend"}"><b>${b.svc}</b><small>${m.name} · ${b.cl}${b.paid?"":" · "+t("czeka")}</small></div>`:""}</div>`})});
+  h+=`</div></div><div class="glegend"><span><i class="gdot" style="background:var(--ok)"></i>${t("leg_paid")}</span><span><i class="gdot" style="background:var(--warn)"></i>${t("leg_pend")}</span></div>`;
+  document.getElementById("adminContent").innerHTML=h;
+  const p=BOOKINGS.filter(b=>b.paid).length;document.getElementById("adminFoot").innerHTML=`<small>${t("g_foot")(BOOKINGS.length,p)}</small>`;
+}
+function renderStaff(){
+  const act=MASTERS.filter(m=>m.active).length;
+  let h=`<div class="admin-stat"><div><b>${act}</b><span>${t("st_act")}</span></div><div><b>${MASTERS.length}</b><span>${t("st_team")}</span></div><div><b>${SERVICES.length}</b><span>${t("st_svc")}</span></div></div><div class="admin-body">`;
+  h+=MASTERS.map(m=>`<div class="stf ${m.active?"off-not":""} ${m.active?"":"off"}"><span class="av">${m.name[0]}</span><span class="info"><b>${m.name}</b><span class="meta2">${t("role")} · ${m.hours} · ${SERVICES.length} ${t("uslug")}</span></span><button class="sw ${m.active?"on":""}" role="switch" aria-checked="${m.active}" aria-label="${m.name}" onclick="toggleStaff(${m.id})"></button></div>`).join("")+`</div>`;
+  document.getElementById("adminContent").innerHTML=h;
+  document.getElementById("adminFoot").innerHTML=`<small>${t("staff_hint")}</small><button class="btn btn-sm red" onclick="addStaff()">${t("add_master")}</button>`;
+}
+function toggleStaff(id){const m=MASTERS.find(x=>x.id===id);m.active=!m.active;if(!m.active&&S.master===id){S.master=null;S.service=null;S.slot=null}renderAdmin();render();renderTeam()}
+function addStaff(){const id=Math.max(...MASTERS.map(m=>m.id))+1;MASTERS.push({id,name:"Nowy / Новий",active:true,hours:"9:00–17:00"});renderAdmin();render();renderTeam()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAdmin()});
+
+(()=>{const stk=document.getElementById("stk"),hero=document.querySelector(".hero"),bk=document.getElementById("booking");
+  const upd=()=>{const hb=hero.getBoundingClientRect().bottom,r=bk.getBoundingClientRect();stk.classList.toggle("show",hb<0&&!(r.top<innerHeight*.6&&r.bottom>0))};
+  addEventListener("scroll",upd,{passive:true});upd()})();
+applyI18n();render();
+</script>
+</html>
