@@ -606,9 +606,9 @@ en:{gd_tag:"Demo for Sztuka Barber",gd_h:"What to check in 30 seconds",gd_p:"You
 let lang="pl";const t=k=>L[lang][k];
 
 const SALONS=[
- {id:0,city:"Kraków",name:"Floriańska",addr:"ul. Floriańska 24",tel:"576 287 003",barbers:[{n:"Karol",f:1},{n:"Łukasz"},{n:"Mikołaj"},{n:"Lucek"},{n:"Patryk"}]},
- {id:1,city:"Kraków",name:"Krowodrza",addr:"ul. Krowoderskich Zuchów 12",tel:"570 486 624",ph:1,barbers:[{n:"Stanowisko 1"},{n:"Stanowisko 2"},{n:"Stanowisko 3"}]},
- {id:2,city:"Skarżysko-Kamienna",name:"Skarżysko",addr:"ul. Piłsudskiego 34/51",tel:"577 980 708",ph:1,barbers:[{n:"Stanowisko 1"},{n:"Stanowisko 2"}]}
+ {id:0,city:"Kraków",name:"Kraków",title:"Sztuka Barber – Kraków",addr:"ul. Floriańska 24",tel:"576 287 003",barbers:[{n:"Karol",f:1},{n:"Łukasz"},{n:"Mikołaj"},{n:"Lucek"},{n:"Patryk"}]},
+ {id:1,city:"Kraków",name:"Krowodrza",title:"Sztuka Barber – Krowodrza",addr:"ul. Krowoderskich Zuchów 12",tel:"570 486 624",ph:1,barbers:[{n:"Stanowisko 1"},{n:"Stanowisko 2"},{n:"Stanowisko 3"}]},
+ {id:2,city:"Skarżysko-Kamienna",name:"Skarżysko",title:"Sztuka Barbershop Skarżysko",addr:"ul. Piłsudskiego 34/51",tel:"577 980 708",ph:1,barbers:[{n:"Stanowisko 1"},{n:"Stanowisko 2"}]}
 ];
 SALONS.forEach(s=>s.barbers.forEach((b,i)=>{b.id=i;b.on=true}));
 const SV=[
@@ -648,12 +648,12 @@ const ARROW=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 const CHEV=`<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>`;
 function applyI18n(){
  document.querySelectorAll("[data-i18n]").forEach(el=>{const v=t(el.dataset.i18n);if(typeof v==="string")el.innerHTML=v});
- document.getElementById("salonCards").innerHTML=SALONS.map(s=>`<div class="salon"><span class="city">${s.city}</span><h3>Sztuka Barber · ${s.name}</h3><p>${s.addr}</p><span class="tel">${s.tel}</span><button class="btn sm" onclick="openBook({salon:${s.id}})">${t("sal_b")}</button></div>`).join("");
+ document.getElementById("salonCards").innerHTML=SALONS.map(s=>`<div class="salon"><span class="city">${s.city}</span><h3>${s.title}</h3><p>${s.addr}</p><span class="tel">${s.tel}</span><button class="btn sm" onclick="openBook({salon:${s.id}})">${t("sal_b")}</button></div>`).join("");
  const cats=[["hair","cat_hair"],["combo","cat_combo"],["beard","cat_beard"]];
  document.getElementById("priceList").innerHTML=cats.map(([c,k])=>`<div class="cat"><h3>${t(k)}</h3>${SV.filter(s=>s.c===c).map(s=>`<div class="row"><span class="n">${sn(s)}</span><span class="d">${durTxt(s.min)}</span><span class="pr"><s>${s.p} zł</s><b>${promo(s.p)} zł</b><button aria-label="${t("book")}: ${sn(s)}" onclick="openBook({svc:'${s.id}'})">${ARROW}</button></span></div>`).join("")}</div>`).join("");
  document.getElementById("ownerGrid").innerHTML=t("ow").map((o,i)=>`<div class="oi ${i===4?"warn":""}"><div class="k">0${i+1}</div><h3>${o[0]}</h3><p>${o[1]}</p></div>`).join("");
- document.getElementById("profLocs").innerHTML=SALONS.map(s=>`<div><b>Sztuka Barber · ${s.name}</b><span>${s.city}, ${s.addr}</span></div>`).join("");
- document.getElementById("footSalons").innerHTML=SALONS.map(s=>`<div><b>${s.city} · ${s.name}</b><span>${s.addr}</span><span>${s.tel}</span></div>`).join("");
+ document.getElementById("profLocs").innerHTML=SALONS.map(s=>`<div><b>${s.title}</b><span>${s.city}, ${s.addr}</span></div>`).join("");
+ document.getElementById("footSalons").innerHTML=SALONS.map(s=>`<div><b>${s.title}</b><span>${s.addr}</span><span>${s.tel}</span></div>`).join("");
  document.getElementById("dTitle").textContent=t("d_title");
  document.getElementById("pTitle").textContent=t("p_title");
  if(typeof splitHeads==="function")splitHeads();
@@ -678,7 +678,7 @@ function renderW(){
  document.getElementById("prog").innerHTML=st.map((_,i)=>`<div class="${i<cur?"on":""}"></div>`).join("");
  document.getElementById("progL").innerHTML=st.map((x,i)=>`<span class="${i===cur-1?"on":""}">${x}</span>`).join("");
  const db=document.getElementById("db"),df=document.getElementById("df");
- if(W.step===1){db.innerHTML=`<h3 class="q">${t("q_salon")}</h3><div class="opts">${SALONS.map(s=>`<button class="opt" aria-pressed="${W.salon===s.id}" onclick="W.salon=${s.id};W.barber=null;W.slot=null;go(2)"><span class="av">${s.name[0]}</span><span class="t"><b>${s.city} · ${s.name}</b><small>${s.addr}</small></span>${CHEV}</button>`).join("")}</div>`}
+ if(W.step===1){db.innerHTML=`<h3 class="q">${t("q_salon")}</h3><div class="opts">${SALONS.map(s=>`<button class="opt" aria-pressed="${W.salon===s.id}" onclick="W.salon=${s.id};W.barber=null;W.slot=null;go(2)"><span class="av" style="font-size:.8rem">SZT</span><span class="t"><b>${s.title}</b><small>${s.addr}, ${s.city}</small></span>${CHEV}</button>`).join("")}</div>`}
  if(W.step===2){const s=SALONS[W.salon];db.innerHTML=`<h3 class="q">${t("q_barber")}</h3><div class="opts">
   <button class="opt" aria-pressed="${W.barber===-1}" onclick="W.barber=-1;W.slot=null;go(W.svc?4:3)"><span class="av">∗</span><span class="t"><b>${t("any")}</b><small>${t("any_s")}</small></span>${CHEV}</button>
   ${s.barbers.filter(b=>b.on&&!s.ph).map(b=>`<button class="opt" aria-pressed="${W.barber===b.id}" onclick="W.barber=${b.id};W.slot=null;go(W.svc?4:3)"><span class="av">${b.n.includes(" ")?b.n.split(" ")[1]:b.n[0]}</span><span class="t"><b>${b.n}</b><small>${b.f?t("role_f"):s.ph?t("ph_team"):t("role")}</small></span>${CHEV}</button>`).join("")}</div>`}
@@ -694,7 +694,7 @@ function renderW(){
  if(W.step===5){const s=SALONS[W.salon],sv=svcObj(),b={n:bName(W.salon,bId())},ok=validName()&&validPhone();
   db.innerHTML=`<div class="hold"><span>${t("hold")}</span><span class="clock" id="clock">10:00</span></div>
   <div class="recap">
-   <div class="r"><span>${t("s_salon")}</span><b>${s.city} · ${s.name}</b></div>
+   <div class="r"><span>${t("s_salon")}</span><b>${s.title}</b></div>
    <div class="r"><span>${t("s_barber")}</span><b>${b.n}</b></div>
    <div class="r"><span>${t("s_svc")}</span><b>${sn(sv)}</b></div>
    <div class="r"><span>${t("s_time")}</span><b>${dlong(DAYS[W.day])}, ${U(W.slot)}</b></div>
